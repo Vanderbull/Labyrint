@@ -6,15 +6,17 @@ extern HINSTANCE hInst;				// holds the instance for this app
 
 Engine::Engine()
 {
+	std::cout << "Engine starting..." << std::endl;
 }
 
 Engine::~Engine()
 {
+	std::cout << "Engine stopping..." << std::endl;
 }
 
 bool Engine::init()
 {
-	Laby.LoadMap("levels/level2.txt");
+	Laby.LoadMap("levels/level1.txt");
 
 	long t1=timeGetTime();
 
@@ -26,12 +28,6 @@ bool Engine::init()
 
 	timePaint=t2-t1;
 	return true;
-
-//	Laby.StartLocation();
-
-//	Player.SetXY(Laby.xcoord,Laby.ycoord);
-
-//	return true;
 }
 
 bool Engine::paint(HINSTANCE hInstance, HWND hwnd, HDC hdc, PAINTSTRUCT ps, RECT rect,int temp)
@@ -40,7 +36,6 @@ bool Engine::paint(HINSTANCE hInstance, HWND hwnd, HDC hdc, PAINTSTRUCT ps, RECT
 
 	hdc = GetDC(hwnd);
 	
-
 	for(int col = 0; col < Laby.levelFigure.size()-1; col++)
 	{
 			for(int row = 0; row < Laby.levelFigure.size()-1; row++)
@@ -61,21 +56,13 @@ bool Engine::paint(HINSTANCE hInstance, HWND hwnd, HDC hdc, PAINTSTRUCT ps, RECT
 			}
 	}
 
-
-	//int x = rand()%255;
-	//int y = rand()%255;
-
-	
-	//SetPixel(hdc,x,y,RGB(255,0,0));
-
 	HPEN white_pen = CreatePen(PS_SOLID, 1, RGB(255,255,255));
 	SelectObject(hdc,white_pen);
 	//Rectangle(hdc,xprev,yprev,xprev+Laby.block_size,yprev+Laby.block_size);
 	Rectangle(hdc,Player.GetPX(),Player.GetPY(),Player.GetPX()+Laby.block_size,Player.GetPY()+Laby.block_size);
-//	ShowBitmapResource(hInstance, hdc,PlayerX,PlayerY,IDB_PLAYER);
+	//ShowBitmapResource(hInstance, hdc,PlayerX,PlayerY,IDB_PLAYER);
 	ShowBitmapResource(hInstance, hdc,Player.GetX(),Player.GetY(),IDB_PLAYER);
 	DeleteObject(white_pen);
-
 
 	HPEN red_pen = CreatePen(PS_SOLID, 1, RGB(255,0,0));
 	SelectObject(hdc,red_pen);
