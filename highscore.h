@@ -6,7 +6,6 @@
 #include <iomanip>
 #include <fstream>
 #include<sstream>
-#include <windows.h>
 
 using namespace std;
 
@@ -19,11 +18,9 @@ struct SDescendingDateSort
 {
 	bool operator()(const scores& rpStart, const scores& rpEnd)
      {
-		 //return true;
-		 return rpStart.name > rpEnd.name;
+		return rpStart.name > rpEnd.name;
      }
 };
-
 
 class Hiscore : public std::vector<scores>
 {
@@ -31,10 +28,7 @@ public:
 	~Hiscore(void);
 	Hiscore(void);
 	bool printer(HWND hwnd, const scores& test, int iterator );
-   // singleton stuff
-//	static Hiscore& getInstance() { static Hiscore pInstance; return pInstance;}
 
 private:
 
-	//
 };
