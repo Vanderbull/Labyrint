@@ -2,8 +2,10 @@
 
 extern HINSTANCE hInst;				// holds the instance for this app
 
-Labyrint::Labyrint() : block_size(32)
+#define TILESIZE 32
+Labyrint::Labyrint() : block_size(TILESIZE)
 {
+	std::cout << "Initializing Labyrint..." << std::endl;
 }
 
 int Labyrint::size()
@@ -11,11 +13,11 @@ int Labyrint::size()
 	return block_size;
 }
 
-// Måste se till att den bara randomizar mitten inte kanterna
 bool Labyrint::RandomizeMap()
 {
-	int		col;
-	int		row;
+	std::cout << "Randomizing map" << std::endl;
+	int col;
+	int row;
 
 	levelFigure.clear();
 
@@ -26,9 +28,13 @@ bool Labyrint::RandomizeMap()
 		for(row = 0; row < levelFigure.size()-1; row++)
 		{
 			if(row == 0 || row == 19 || col == 0 || col == 19)
+			{
 				levelFigure[col].push_back(1);
+			}
 			else
-				levelFigure[col].push_back(rand()%2);		
+			{
+				levelFigure[col].push_back(rand()%2);
+			}
 		}
 	}
 
@@ -37,9 +43,10 @@ bool Labyrint::RandomizeMap()
 
 bool Labyrint::LoadMap(std::string file)
 {
-	int		col;
-	int		row;
-	char	c;
+	std::cout << "Loading map..." << std::endl;
+	int col;
+	int row;
+	char c;
 
 	ifstream fin(file.c_str());
 
@@ -105,8 +112,10 @@ bool Labyrint::Goal(HWND hwnd, HINSTANCE hInstance, std::string szPlayerName, in
 
 bool Labyrint::Init()
 {
+	std::cout << "Init for Labyrint..." << std::endl;
 	return true;
 }
 Labyrint::~Labyrint()
 {
+	std::cout << "Destroying the labyrint..." << std::endl;
 }
