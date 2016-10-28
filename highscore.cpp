@@ -4,10 +4,12 @@ extern HINSTANCE hInst;				// holds the instance for this app
 
 Hiscore::Hiscore(void)
 {
+	std::cout << "Creating a Highscore object" << std::endl;
 }
 
 Hiscore::~Hiscore(void)
 {
+	std::cout << "Destroying a Highscore object" << std::endl;
 }
 
 bool Hiscore::printer(HWND hwnd, const scores& test, int iterator )
