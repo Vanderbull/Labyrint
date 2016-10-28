@@ -18,22 +18,15 @@ bool Engine::init()
 {
 	Laby.LoadMap("levels/level1.txt");
 
-	long t1=timeGetTime();
-
 	Laby.StartLocation();
 
 	Player.SetXY(Laby.xcoord,Laby.ycoord);
 
-	long t2=timeGetTime();
-
-	timePaint=t2-t1;
 	return true;
 }
 
 bool Engine::paint(HINSTANCE hInstance, HWND hwnd, HDC hdc, PAINTSTRUCT ps, RECT rect,int temp)
 {
-	long t3 =timeGetTime();
-
 	hdc = GetDC(hwnd);
 	
 	for(int col = 0; col < Laby.levelFigure.size()-1; col++)
@@ -73,11 +66,6 @@ bool Engine::paint(HINSTANCE hInstance, HWND hwnd, HDC hdc, PAINTSTRUCT ps, RECT
 	ReleaseDC(hwnd,hdc);
 	ValidateRect(hwnd,&rect);
 	GetClientRect(hwnd,&rect);
-
-	long t4 =timeGetTime();
-	long elapsed=t4-t3;
-	timePaint = t4-t3;
-
 	return true;
 }
 
@@ -101,9 +89,4 @@ bool Engine::collision(int NextX, int NextY)
 		Player.SetMoves();
 		return false;
 	}
-}
-
-int Engine::timePainty()
-{
-	return timePaint;
 }
