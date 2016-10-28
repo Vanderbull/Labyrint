@@ -1,4 +1,3 @@
-//#include <vld.h>
 #include <iostream>
 #include <ctime>
 using namespace std;
@@ -10,115 +9,19 @@ using namespace std;
 #include "gameengine.h"
 #include "variables.h"
 #include "DirectInputManager.h"
+#include "Particle.h"
+#include "Dot.h"
 
-class Particle
-{
-    private:
-    //Offsets
-    int x, y;
-    
-    //Current frame of animation
-    int frame;
-    
-    //Type of particle
-    //SDL_Surface *type;
-    
-    public:
-    //Constructor
-    Particle( int X, int Y );
-    
-    //Shows the particle
-    void show();
-
-    //Checks if particle is dead
-    bool is_dead();
-};
-//The dot
-class Dot
-{
-    private:
-    //The offsets
-    int x, y;
-    
-    //The velocity of the dot
-    int xVel, yVel;
-    
-    //The particles
-    Particle *particles[ 20 ];
-    
-    public:
-    //Initializes
-    Dot();
-    
-    //Cleans up particles
-    ~Dot();
-    
-    //Handles keypresses
-    void handle_input();
-    
-    //Shows the particles
-    void show_particles();
-    
-    //Shows the dot
-    void show();
-};
-// Huvud Device handle
+// main device handle
 HDC	hdc=0;
-Particle::Particle( int X, int Y )
-{
-    //Set offsets
-    x = X - 5 + ( rand() % 25 );
-    y = Y - 5 + ( rand() % 25 );
-    
-    //Initialize animation
-    frame = rand() % 5;
-    
-    //Set type
-    switch( rand() % 3 )
-    {
-        case 0: SetPixel(hdc,x,y,RGB(255,0,0)); break;
-        case 1: SetPixel(hdc,x,y,RGB(0,255,0)); break;
-        case 2: SetPixel(hdc,x,y,RGB(0,0,255)); break;
-    }
-}
-
-void Particle::show()
-{
-    //Show image
-    //apply_surface( x, y, type, screen );
-    
-    //Show shimmer
-    if( frame % 2 == 0 )
-    {
-		SetPixel(hdc,x,y,RGB(255,255,255));
-        //apply_surface( x, y, shimmer, screen );    
-    }
-    
-    //Animate
-    frame++;
-}
-
-bool Particle::is_dead()
-{
-    if( frame > 10 )
-    {
-        return true;    
-    }
-    
-    return false;
-}
-
 HINSTANCE		hInst;
 HWND			hwnd;
 static TCHAR	szAppName[] = TEXT("Labyrint") ;
 //static HINSTANCE hInstance;
 static HICON	hIcon;
 static HMENU	hMenu;
-static int		cxIcon, cyIcon, cxClient, cyClient ;
-
-
-	
-PAINTSTRUCT		ps ;
+static int cxIcon, cyIcon, cxClient, cyClient ;
+PAINTSTRUCT ps;
 
 // rect for holding window size
 RECT rect;
@@ -180,10 +83,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	ShowWindow(hwnd, iCmdShow) ;
 	UpdateWindow(hwnd);
 
-	Particle balle(100,100);;
-
 	Ingine.init();
-	timeInit = Ingine.timePainty();
 
 	if( ! (GameInit(hwnd) ) )
 		SendMessage(hwnd,WM_QUIT,NULL,NULL);
@@ -198,7 +98,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 			DispatchMessage(&msg);
 		}
 
-		timePaint = Ingine.timePainty();
 		mgr.ProcessKeyboardInput();
 
 		if(mgr.isKeyDown(DIK_RIGHT))
@@ -252,7 +151,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	return(msg.wParam);
 }
 
-// LRESULT CALLBACK WndProc() sköter grovjobbet
+// LRESULT CALLBACK WndProc() skÃ¶ter grovjobbet
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {	
@@ -277,52 +176,52 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 			switch(wParam) 
 			{
 				case VK_RIGHT:
+				{
+					Player.SetLastXY();
+					if(!Laby.Collision(Player.GetX()/32 + 1, Player.GetY()/32))
 					{
-			Player.SetLastXY();
-			if(!Laby.Collision(Player.GetX()/32 + 1, Player.GetY()/32))
-			{
-				Player.SetMoves();
-				Player.SetXY(Player.GetX()+Laby.block_size,Player.GetY());
-			}
+						Player.SetMoves();
+						Player.SetXY(Player.GetX()+Laby.block_size,Player.GetY());
 					}
-					break;
+				}
+				break;
 					
 				
 				case VK_LEFT:
+				{
+					Player.SetLastXY();
+					if(!Laby.Collision(Player.GetX()/32 + 1, Player.GetY()/32))
 					{
-			Player.SetLastXY();
-			if(!Laby.Collision(Player.GetX()/32 + 1, Player.GetY()/32))
-			{
-				Player.SetMoves();
-				Player.SetXY(Player.GetX()+Laby.block_size,Player.GetY());
-			}
+						Player.SetMoves();
+						Player.SetXY(Player.GetX()+Laby.block_size,Player.GetY());
 					}
-					break;
+				}
+				break;
 
 				case VK_UP:
+				{
+					roc++;
+					Player.SetLastXY();
+					if(!Laby.Collision(Player.GetX()/32 + 1, Player.GetY()/32))
 					{
-						roc++;
-			Player.SetLastXY();
-			if(!Laby.Collision(Player.GetX()/32 + 1, Player.GetY()/32))
-			{
-				Player.SetMoves();
-				Player.SetXY(Player.GetX()+Laby.block_size,Player.GetY());
-			}
+						Player.SetMoves();
+						Player.SetXY(Player.GetX()+Laby.block_size,Player.GetY());
 					}
-					break;
+				}
+				break;
 				case VK_DOWN:
+				{
+					roc--;
+					Player.SetLastXY();
+					if(!Laby.Collision(Player.GetX()/32 + 1, Player.GetY()/32))
 					{
-						roc--;
-			Player.SetLastXY();
-			if(!Laby.Collision(Player.GetX()/32 + 1, Player.GetY()/32))
-			{
-				Player.SetMoves();
-				Player.SetXY(Player.GetX()+Laby.block_size,Player.GetY());
-			}
+						Player.SetMoves();
+						Player.SetXY(Player.GetX()+Laby.block_size,Player.GetY());
 					}
-					break;
+				}
+				break;
 				default:
-					break; //Everything else
+				break; //Everything else
 			} 
 		return 0; 
 
@@ -338,100 +237,88 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 			switch(LOWORD(wParam))
 			{
 				case ID_RIGHT:
+				{
+					Player.SetLastXY();
+					if(!Laby.Collision(Player.GetX()/32 + 1, Player.GetY()/32))
 					{
-			Player.SetLastXY();
-			if(!Laby.Collision(Player.GetX()/32 + 1, Player.GetY()/32))
-			{
-				Player.SetMoves();
-				Player.SetXY(Player.GetX()+Laby.block_size,Player.GetY());
-			}
-						SetFocus(hwnd);
+						Player.SetMoves();
+						Player.SetXY(Player.GetX()+Laby.block_size,Player.GetY());
 					}
-					break;
-					
-				
+					SetFocus(hwnd);
+				}
+				break;
 				case ID_LEFT:
+				{
+					Player.SetLastXY();
+					if(!Laby.Collision(Player.GetX()/32 + 1, Player.GetY()/32))
 					{
-			Player.SetLastXY();
-			if(!Laby.Collision(Player.GetX()/32 + 1, Player.GetY()/32))
-			{
-				Player.SetMoves();
-				Player.SetXY(Player.GetX()+Laby.block_size,Player.GetY());
-			}
-						SetFocus(hwnd);
+						Player.SetMoves();
+						Player.SetXY(Player.GetX()+Laby.block_size,Player.GetY());
 					}
-					break;
-
+					SetFocus(hwnd);
+				}
+				break;
 				case ID_UP:
+				{
+					Player.SetLastXY();
+					if(!Laby.Collision(Player.GetX()/32 + 1, Player.GetY()/32))
 					{
-			Player.SetLastXY();
-			if(!Laby.Collision(Player.GetX()/32 + 1, Player.GetY()/32))
-			{
-				Player.SetMoves();
-				Player.SetXY(Player.GetX()+Laby.block_size,Player.GetY());
-			}
-						SetFocus(hwnd);
+						Player.SetMoves();
+						Player.SetXY(Player.GetX()+Laby.block_size,Player.GetY());
 					}
-					break;
+					SetFocus(hwnd);
+				}
+				break;
 				case ID_DOWN:
+				{
+					Player.SetLastXY();
+					if(!Laby.Collision(Player.GetX()/32 + 1, Player.GetY()/32))
 					{
-			Player.SetLastXY();
-			if(!Laby.Collision(Player.GetX()/32 + 1, Player.GetY()/32))
-			{
-				Player.SetMoves();
-				Player.SetXY(Player.GetX()+Laby.block_size,Player.GetY());
-			}
-						SetFocus(hwnd);
+						Player.SetMoves();
+						Player.SetXY(Player.GetX()+Laby.block_size,Player.GetY());
 					}
-					break;
-
-			case IDM_APP_EXIT:
-				SendMessage(hwnd,WM_CLOSE,0,0);
+					SetFocus(hwnd);
+				}
+				break;
+				case IDM_APP_EXIT:
+					SendMessage(hwnd,WM_CLOSE,0,0);
 				return 0;
-
-			case IDM_LEVEL_LOAD:
+				
+				case IDM_LEVEL_LOAD:
 				{
 					Ingine.erase_screen(hwnd,hdc,ps,rect);
-					//EraseScreen(hwnd,hdc,ps,rect);
-					//Laby.RandomizeMap();
 					MessageBox(0,"Coming soon", "Loading level",MB_ICONINFORMATION);
 					DialogBox (hInst, MAKEINTRESOURCE(IDD_DIALOG2), NULL, NameDlgProc);
 					return 0;
 				}
-			case IDM_HIGHSCORE:
-				GameLoading(hwnd);
+				case IDM_HIGHSCORE:
+					GameLoading(hwnd);
 				return 0;
-
-			case IDM_ABOUT:
-				MessageBox(hwnd,"Created by Rickard Skeppstrom\n2007(c)","About",MB_ICONINFORMATION);
+				case IDM_ABOUT:
+					MessageBox(hwnd,"Created by Rickard Skeppstrom\n2007(c)","About",MB_ICONINFORMATION);
 				return 0;
-
-			case IDM_VERSION:
-				MessageBox(hwnd,"Version 1.2","Version",MB_ICONINFORMATION);
+				case IDM_VERSION:
+					MessageBox(hwnd,"Version 1.2","Version",MB_ICONINFORMATION);
 				return 0;
-		
-			default:
+				default:
 				break;
 				InvalidateRect(hwnd,NULL,TRUE);
 			}
 			return 0;
 		
 
-	case WM_SIZE:
-		cxClient = LOWORD(lParam) ;
-		cyClient = HIWORD(lParam) ;
+		case WM_SIZE:
+			cxClient = LOWORD(lParam) ;
+			cyClient = HIWORD(lParam) ;
 		return 0;
 
-	case WM_PAINT:
-		BeginPaint(hwnd, &ps);
-		//Ingine.paint(hInst,hwnd,hdc,ps,rect,roc);
-		//GamePaint(hInst, hwnd,hdc,ps,rect,roc);
-
-		EndPaint(hwnd,&ps);
+		case WM_PAINT:
+			BeginPaint(hwnd, &ps);
+			EndPaint(hwnd,&ps);
 		return 0;
 
-	case WM_DESTROY:
-		PostQuitMessage (0) ;
+		case WM_DESTROY:
+			PostQuitMessage (0) ;
 		return 0;
 	}
 	return DefWindowProc (hwnd, message, wParam, lParam) ;
