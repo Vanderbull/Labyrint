@@ -28,13 +28,8 @@ public:
 	bool paint(HINSTANCE hInstance, HWND hwnd, HDC hdc, PAINTSTRUCT ps, RECT rect,int temp);
 	bool erase_screen(HWND hwnd, HDC hdc, PAINTSTRUCT ps, RECT rect);
 	bool collision(int NextX, int NextY);
-	int timePainty();
 
 private:
-
-	long timePaint;
-	long timeInit;
-	long timeCollision;
 
 	Engine(void);
 };
