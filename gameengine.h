@@ -15,17 +15,6 @@
 /* Get a reference to the DirectInput Manager */	
 //static Engine& Ingine = Engine::getInstance();
 
-long timePaint;
-long timeInit;
-long timeCollision;
-
-//char	playername[64];
-
-//vector<Hiscore> top_ten;
-//Hiscore temp;
-
-
-
 bool GameInit(HWND hwnd);
 bool GameLoading(HWND hwnd);
 bool GameGoal(HWND hwnd, string szPlayerName, int x, int y, int moves);
@@ -36,14 +25,10 @@ BOOL CALLBACK NameDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 
 bool GameInit(HWND hwnd)
 {
-	long t1=timeGetTime();
-
 	Laby.StartLocation();
 
 	Player.SetXY(Laby.xcoord,Laby.ycoord);
 
-	long t2=timeGetTime();
-	timeInit=t2-t1;
 	return true;
 }
 
@@ -63,9 +48,9 @@ bool GameLoading(HWND hwnd)
 }
 
 // int Goal() funktionen tar emot spelaren namn och skriver ut namn och antalet
-// moves som spelaren har gjort fˆr att komma till mÂl, kollar ifall man har gjort
-// b‰sta antalet moves och notifierar i sÂ fal spelaren om att denna har lyckats
-// komma in pÂ highsocre listan. Skriver sedan allt till fil
+// moves som spelaren har gjort f√∂r att komma till m√•l, kollar ifall man har gjort
+// b√§sta antalet moves och notifierar i s√• fal spelaren om att denna har lyckats
+// komma in p√• highsocre listan. Skriver sedan allt till fil
 
 bool GameGoal(HWND hwnd, HINSTANCE hInstance, std::string szPlayerName, int x, int y, int moves)
 {
@@ -103,15 +88,12 @@ bool EraseScreen(HWND hwnd, HDC hdc, PAINTSTRUCT ps, RECT rect)
 	return true;
 }
 
-// void GamePaint() ser till att rita grafiken till sk‰rmen
+// void GamePaint() ser till att rita grafiken till sk√§rmen
 
 bool GamePaint(HINSTANCE hInstance, HWND hwnd, HDC hdc, PAINTSTRUCT ps, RECT rect,int temp )
 {
-	long t3=timeGetTime();
-
 	hdc = GetDC(hwnd);
 	
-
 	for(int col = 0; col < Laby.levelFigure.size()-1; col++)
 	{
 			for(int row = 0; row < Laby.levelFigure.size()-1; row++)
@@ -150,21 +132,17 @@ bool GamePaint(HINSTANCE hInstance, HWND hwnd, HDC hdc, PAINTSTRUCT ps, RECT rec
 	ReleaseDC(hwnd,hdc);
 	ValidateRect(hwnd,&rect);
 	GetClientRect(hwnd,&rect);
-	long t4 =timeGetTime();
-	long elapsed=t4-t3;
-	timePaint = t4-t3;
-
 	return true;
 }
 
-// Hanterar Kollisions detektionen fˆr spelet och kollar ‰ven ifall man nÂt mÂlet
-// anropet till Goal skall dock flyttas och troligen vara i main loopen ist‰llet.
-// Kan finnas en bugg i den med att man fÂr ett mindre move ‰n vad man egentligen
+// Hanterar Kollisions detektionen f√∂r spelet och kollar √§ven ifall man n√•t m√•let
+// anropet till Goal skall dock flyttas och troligen vara i main loopen ist√§llet.
+// Kan finnas en bugg i den med att man f√•r ett mindre move √§n vad man egentligen
 // har tagit.
 
 bool GameCollision(int NextX, int NextY)
 {
-	long t5 =timeGetTime();
+
 	if(Laby.levelFigure[NextX].at(NextY) == 1)
 	{
 		return true;
@@ -174,13 +152,10 @@ bool GameCollision(int NextX, int NextY)
 		Player.SetMoves();
 		return false;
 	}
-	long t6 =timeGetTime();
-	long elapsed=t6-t5;
-	timePaint = t6-t5;
 }
 
-// BOOL CALLBACK NameDlgProc() ‰r t‰nkt att anv‰ndas fˆr att ta emot inmatning
-// av spelarens namn innan spelet bˆrjar, ser ‰ven till att man faktiskt fyller
+// BOOL CALLBACK NameDlgProc() √§r t√§nkt att anv√§ndas f√∂r att ta emot inmatning
+// av spelarens namn innan spelet b√∂rjar, ser √§ven till att man faktiskt fyller
 // i ett namn.
 
 BOOL CALLBACK NameDlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
