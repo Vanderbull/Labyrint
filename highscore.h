@@ -17,9 +17,9 @@ struct scores
 struct SDescendingDateSort
 {
 	bool operator()(const scores& rpStart, const scores& rpEnd)
-     {
+	{
 		return rpStart.name > rpEnd.name;
-     }
+	}
 };
 
 class Hiscore : public std::vector<scores>
