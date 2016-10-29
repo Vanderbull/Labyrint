@@ -2,38 +2,40 @@
 
 extern HINSTANCE hInst;				// holds the instance for this app
 
-Player::Player() : m_Moves(0)
+Player::Player() : mMoves(0)
 {
-	xprev = 0;
-	yprev = 0;
+	std::cout << "Player is growing up to be a strong man..." << std::endl;
+	mXPrev = 0;
+	mYPrev = 0;
 }
 
 Player::~Player()
 {
+	std::cout << "Player is buried and lost forever..." << std:endl;
 }
 
 int Player::GetMoves()
 {
-	return m_Moves;
+	return mMoves;
 }
 
 bool Player::SetMoves()
 {
-	m_Moves++;
+	mMoves++;
 	return true;
 }
 
-bool Player::SetXY(int new_x, int new_y)
+bool Player::SetXY(int iX, int iY)
 {
-	x = new_x;
-	y = new_y;
+	x = iX;
+	y = iY;
 	return true;
 }
 
 bool Player::SetLastXY()
 {
-	xprev = x;
-	yprev = y;
+	mXPrev = x;
+	mYPrev = y;
 	return true;
 }
 
@@ -47,9 +49,9 @@ int Player::GetY()
 }
 int Player::GetPX()
 {
-	return xprev;
+	return mXPrev;
 }
 int Player::GetPY()
 {
-	return yprev;
+	return mYPrev;
 }
