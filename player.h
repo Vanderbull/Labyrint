@@ -9,16 +9,16 @@ public:
 
 	int GetMoves();
 	bool SetMoves();
-	bool SetXY(int new_x,int new_y);
+	bool SetXY(int iX,int iY);
 	bool SetLastXY();
 	int GetX();
 	int GetY();
-	int GetPX();
-	int GetPY();
+	int GetPreviousX();
+	int GetpreviousY();
 private:
 	Player(void);
 
-	int m_Moves;
-	int x,y;
-	int xprev,yprev;
+	int mMoves;
+	int mX,mY;
+	int mXPrev,mYPrev;
 };
