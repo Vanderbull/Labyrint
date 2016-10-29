@@ -27,25 +27,25 @@ bool Player::SetMoves()
 
 bool Player::SetXY(int iX, int iY)
 {
-	x = iX;
-	y = iY;
+	mX = iX;
+	mY = iY;
 	return true;
 }
 
 bool Player::SetLastXY()
 {
-	mXPrev = x;
-	mYPrev = y;
+	mXPrev = mX;
+	mYPrev = mY;
 	return true;
 }
 
 int Player::GetX()
 {
-	return x;
+	return mX;
 }
 int Player::GetY()
 {
-	return y;
+	return mY;
 }
 int Player::GetPX()
 {
